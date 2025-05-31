@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page - Submit Article</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <form id="articleForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" required>
+        
+        <label for="content">Content:</label>
+        <textarea id="content" required></textarea>
+        
+        <button type="submit">Submit Article</button>
+    </form>
 
+    <script>
+        document.getElementById('articleForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            
+            try {
+                const response = await fetch('/api/articles', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, content })
+                });
+
+                if (response.ok) {
+                    alert('Article submitted successfully!');
+                    document.getElementById('articleForm').reset();
+                } else {
+                    alert('Failed to submit article');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to submit article');
+            }
+        });
+    </script>
+</body>
+</html>
